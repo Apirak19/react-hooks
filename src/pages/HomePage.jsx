@@ -6,7 +6,7 @@ const MIN = 1;
 
 export const HomePage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [transitionDuration, setTransitionDuration] = useState(1);
+  const [transitionDuration, setTransitionDuration] = useState(10);
 
   const getCoverImage = (url, initialValue = null) => {
     const [result, setResult] = useState(initialValue);
@@ -66,11 +66,12 @@ export const HomePage = () => {
       {/*  TODO: Jokes */}
       <div>
         <h1>Jokes</h1>
-        {joke.map((joke, index) => (
-          <div key={index}>
-            <p>{joke.setup}</p>;<p>{joke.punchline}</p>;
+        {joke.length > 0 && (
+          <div>
+            <p><span>Setup: </span>{joke[currentIndex].setup}</p>
+            <p><span>PunchLine: </span>{joke[currentIndex].punchline}</p>
           </div>
-        ))}
+        )}
       </div>
     </>
   );
