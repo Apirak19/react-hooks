@@ -7,6 +7,7 @@ const MIN = 1;
 export const HomePage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [transitionDuration, setTransitionDuration] = useState(1);
+
   const getCoverImage = (url, initialValue = null) => {
     const [result, setResult] = useState(initialValue);
     useEffect(() => {
@@ -17,6 +18,18 @@ export const HomePage = () => {
     }, []);
     return result;
   };
+
+  const getJoke = (url, initialJoke = null) => {
+    const [joke, setJoke] = useState(initialJoke);
+    useEffect(() => {
+      fetch(url).then(async (res) => {
+        const json = await res.json();
+        setJoke(json);
+      });
+    }, []);
+    return joke;
+  };
+
   useEffect(() => {
     const duration = transitionDuration < MIN ? MIN : transitionDuration;
     const interval = setInterval(() => {
@@ -33,6 +46,8 @@ export const HomePage = () => {
     `https://shibe.online/api/shibes?count=${coverCount}`,
     []
   );
+
+  const joke = getJoke("https://official-joke-api.appspot.com/random_ten", []);
   return (
     <>
       <Navbar />
@@ -49,6 +64,14 @@ export const HomePage = () => {
         <img height={200} src={coverImage[currentIndex]} alt="" />
       </div>
       {/*  TODO: Jokes */}
+      <div>
+        <h1>Jokes</h1>
+        {joke.map((joke, index) => (
+          <div key={index}>
+            <p>{joke.setup}</p>;<p>{joke.punchline}</p>;
+          </div>
+        ))}
+      </div>
     </>
   );
 };
